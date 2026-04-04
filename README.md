@@ -2,6 +2,10 @@
 
 `plugin.audio.ytmusic` — Browse and play your YouTube Music Premium library directly in Kodi. No external dependencies — uses the YouTube Innertube API directly.
 
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=ypoulis%40gmail.com&currency_code=EUR)
+
+---
+
 ## Features
 
 - Home feed with personalized recommendations
@@ -52,3 +56,7 @@ This add-on uses browser cookies for authentication — no passwords are stored.
 ## License
 
 MIT
+
+---
+
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=ypoulis%40gmail.com&currency_code=EUR)
