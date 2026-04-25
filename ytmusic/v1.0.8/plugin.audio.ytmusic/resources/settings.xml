@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <category label="Authentication">
+    <setting id="page_id" type="text" label="Brand Account Page ID (leave empty for default account)" default=""/>
+    <setting type="action" id="import_cookies" label="Re-import cookies.txt" action="RunPlugin(plugin://plugin.audio.ytmusic/?action=import_cookies)"/>
+  </category>
+  <category label="Playback">
+    <setting id="audio_quality" type="enum" label="Audio Quality" values="Best|High (256kbps)|Medium (128kbps)|Low (64kbps)" default="0"/>
+  </category>
+  <category label="Library">
+    <setting id="items_per_page" type="enum" label="Items per page" values="25|50|100" default="1"/>
+  </category>
+  <category label="Advanced">
+    <setting id="python_path" type="text" label="Custom Python path (leave empty for auto-detect)" default=""/>
+    <setting id="debug_log" type="bool" label="Enable debug logging" default="false"/>
+  </category>
+</settings>
