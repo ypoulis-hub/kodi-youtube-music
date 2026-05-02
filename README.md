@@ -24,8 +24,6 @@ YouTube Music for Kodi is an unofficial Kodi add-on that lets you browse and pla
 | ![YouTube Music for Kodi — albums and artists](docs/screenshots/youtube-music-kodi-albums.png) | ![YouTube Music for Kodi — now playing](docs/screenshots/youtube-music-kodi-now-playing.png) | ![YouTube Music for Kodi — settings and authentication](docs/screenshots/youtube-music-kodi-settings.png) |
 | Albums & artists | Now playing | Settings & authentication |
 
-> Drop your real PNGs into `docs/screenshots/` using the filenames above and they will render here.
-
 ---
 
 ## Features
