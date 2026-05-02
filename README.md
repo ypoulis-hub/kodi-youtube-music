@@ -41,14 +41,25 @@ YouTube Music for Kodi is an unofficial Kodi add-on that lets you browse and pla
 
 ## Installation
 
-1. Download the latest **`plugin.audio.ytmusic-x.y.z.zip`** from the [Releases page](https://github.com/ypoulis-hub/kodi-youtube-music/releases/latest).
-2. In Kodi, open **Settings → Add-ons**.
-3. Choose **Install from zip file**.
-4. Select the downloaded ZIP.
-5. Open the add-on once it appears under **Music add-ons**.
-6. Configure authentication (see below).
+### Recommended — via the YPoulis Kodi Repository (auto-updates)
 
-> _Recommended path (coming soon): install the YPoulis Kodi Repository add-on once and receive automatic updates for both this add-on and MotoGP VideoPass._
+Install the repository once and Kodi will keep this add-on (and the MotoGP VideoPass add-on) up to date automatically.
+
+1. Download **`repository.ypoulis-1.0.0.zip`** from [the repository's releases](https://github.com/ypoulis-hub/kodi-repo/releases/latest) (or [direct link](https://ypoulis-hub.github.io/kodi-repo/zips/repository.ypoulis/repository.ypoulis-1.0.0.zip)).
+2. In Kodi → **Settings → Add-ons → Install from zip file** → select the downloaded ZIP.
+3. Then **Install from repository → YPoulis Kodi Repository → Music add-ons → YTMusic**.
+4. Configure authentication (see below).
+
+Full instructions and one-click landing page: [ypoulis-hub.github.io/kodi-repo](https://ypoulis-hub.github.io/kodi-repo/).
+
+### Alternative — install the ZIP manually
+
+1. Download the latest **`plugin.audio.ytmusic-x.y.z.zip`** from the [Releases page](https://github.com/ypoulis-hub/kodi-youtube-music/releases/latest).
+2. In Kodi → **Settings → Add-ons → Install from zip file** → select the downloaded ZIP.
+3. Open the add-on once it appears under **Music add-ons**.
+4. Configure authentication (see below).
+
+> Manual installs do not auto-update — you'll need to repeat the steps above each release. Use the repository path if you want hands-off updates.
 
 ## Requirements
 
