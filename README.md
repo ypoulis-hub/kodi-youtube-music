@@ -1,62 +1,143 @@
-# YTMusic — YouTube Music for Kodi
+# YouTube Music for Kodi
 
-`plugin.audio.ytmusic` — Browse and play your YouTube Music Premium library directly in Kodi. No external dependencies — uses the YouTube Innertube API directly.
+**Unofficial YouTube Music add-on for Kodi.**
+
+[![GitHub release](https://img.shields.io/github/v/release/ypoulis-hub/kodi-youtube-music?label=latest%20release)](https://github.com/ypoulis-hub/kodi-youtube-music/releases/latest)
+[![Kodi](https://img.shields.io/badge/Kodi-21%20Omega-blue)](https://kodi.tv/)
+[![License](https://img.shields.io/github/license/ypoulis-hub/kodi-youtube-music)](LICENSE)
+[![GitHub downloads](https://img.shields.io/github/downloads/ypoulis-hub/kodi-youtube-music/total)](https://github.com/ypoulis-hub/kodi-youtube-music/releases)
+[![GitHub stars](https://img.shields.io/github/stars/ypoulis-hub/kodi-youtube-music)](https://github.com/ypoulis-hub/kodi-youtube-music/stargazers)
+[![Issues](https://img.shields.io/github/issues/ypoulis-hub/kodi-youtube-music)](https://github.com/ypoulis-hub/kodi-youtube-music/issues)
+
+YouTube Music for Kodi is an unofficial Kodi add-on that lets you browse and play your YouTube Music Premium library directly inside Kodi. It is also known as a YouTube Music Kodi add-on, YT Music Kodi plugin, or `plugin.audio.ytmusic`.
 
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=ypoulis%40gmail.com&currency_code=EUR)
+
+---
+
+## Screenshots
+
+| | | |
+|---|---|---|
+| ![YouTube Music for Kodi — home screen](docs/screenshots/youtube-music-kodi-home.png) | ![YouTube Music for Kodi — search](docs/screenshots/youtube-music-kodi-search.png) | ![YouTube Music for Kodi — playlists](docs/screenshots/youtube-music-kodi-playlists.png) |
+| Home screen | Search | Playlists |
+| ![YouTube Music for Kodi — albums and artists](docs/screenshots/youtube-music-kodi-albums.png) | ![YouTube Music for Kodi — now playing](docs/screenshots/youtube-music-kodi-now-playing.png) | ![YouTube Music for Kodi — settings and authentication](docs/screenshots/youtube-music-kodi-settings.png) |
+| Albums & artists | Now playing | Settings & authentication |
+
+> Drop your real PNGs into `docs/screenshots/` using the filenames above and they will render here.
 
 ---
 
 ## Features
 
-- Home feed with personalized recommendations
-- Full library: playlists, albums, artists, liked songs, history
-- Search with filters (songs, albums, artists, playlists)
-- Artist pages with top songs, albums, and singles
-- Lyrics display
-- Radio / watch playlist (auto-queues similar tracks)
-- Brand account switching
-- Background stream prefetching for gapless-ish playback
-- Audio quality selection (Best / 256kbps / 128kbps / 64kbps)
+- Browse your YouTube Music library
+- Search songs, albums, artists and playlists
+- Play liked songs
+- Play playlists
+- Browse albums and artists
+- Lyrics support
+- Radio / watch-playlist support
+- Audio quality selection (up to 256 kbps with Premium)
+- Brand-account support
+- Works on Kodi 21 Omega — Windows, LibreELEC and other supported platforms
+
+## Installation
+
+1. Download the latest **`plugin.audio.ytmusic-x.y.z.zip`** from the [Releases page](https://github.com/ypoulis-hub/kodi-youtube-music/releases/latest).
+2. In Kodi, open **Settings → Add-ons**.
+3. Choose **Install from zip file**.
+4. Select the downloaded ZIP.
+5. Open the add-on once it appears under **Music add-ons**.
+6. Configure authentication (see below).
+
+> _Recommended path (coming soon): install the YPoulis Kodi Repository add-on once and receive automatic updates for both this add-on and MotoGP VideoPass._
 
 ## Requirements
 
 - Kodi 21 (Omega) or later
-- YouTube Music Premium subscription
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed on the system (or auto-installed by the add-on)
+- An active **YouTube Music Premium** subscription
+- Python 3 available on the host (Windows, LibreELEC, Linux, macOS)
 
-## Installation
+## Authentication / Login
 
-1. Download the zip from the `v1.0.7/` folder
-2. In Kodi: **Settings → Add-ons → Install from zip file**
-3. Navigate to the downloaded zip and install
-4. Follow the authentication steps below
+The add-on uses YouTube Music browser cookies to authenticate against your Google / YouTube Music Premium account.
 
-## Authentication
+1. Sign in to [music.youtube.com](https://music.youtube.com/) in a desktop browser.
+2. Export the cookies for `music.youtube.com` using any `cookies.txt` extension (e.g. **Get cookies.txt LOCALLY**, **EditThisCookie**).
+3. Place the file at the path the add-on reports on first run (typically `special://profile/cookies.txt`, which resolves to the add-on's user-data directory).
+4. Restart the add-on. Brand accounts are picked up automatically once cookies are valid.
 
-This add-on uses browser cookies for authentication — no passwords are stored.
+## Supported Kodi versions
 
-1. Install a browser cookie export extension:
-   - Chrome: *Get cookies.txt LOCALLY*
-   - Firefox: *cookies.txt*
-2. Log in to [music.youtube.com](https://music.youtube.com)
-3. Export cookies to a `cookies.txt` file (Mozilla/Netscape format)
-4. In Kodi, go to **Add-on Settings → Authentication → Re-import cookies.txt** and select the file
+- **Kodi 21 Omega** — primary target, regularly tested
+- Kodi 20 Nexus may work but is not officially supported
 
-## Settings
+## Supported platforms
 
-| Setting | Description |
-|--------|-------------|
-| Brand Account Page ID | For YouTube brand/channel accounts (leave empty for personal account) |
-| Re-import cookies.txt | Import a new cookies file |
-| Audio Quality | Best / High (256kbps) / Medium (128kbps) / Low (64kbps) |
-| Items per page | 25 / 50 / 100 |
-| Custom Python path | Override yt-dlp Python path (leave empty for auto-detect) |
-| Debug logging | Enable verbose logging to Kodi log |
+- Windows 10 / 11
+- LibreELEC (tested on x86_64 Generic builds)
+- Other Linux desktops running Kodi
+- macOS (untested but should work)
+
+## Known limitations
+
+- Some podcast / non-music YouTube Music content is not available
+- Brand accounts must be visible to the cookies you provide
+- Resume playback across sessions is not yet implemented (see [ROADMAP](ROADMAP.md))
+
+## FAQ
+
+**Is this an official YouTube Music add-on?**
+No. This is an unofficial Kodi add-on. It is not affiliated with Google, YouTube or YouTube Music.
+
+**Do I need YouTube Music Premium?**
+Yes — premium quality (256 kbps) and ad-free playback require an active YouTube Music Premium subscription.
+
+**Does it work with Kodi 21 Omega?**
+Yes — Kodi 21 Omega is the primary target.
+
+**Does it work on LibreELEC?**
+Yes — it is regularly tested on LibreELEC running Kodi 21.
+
+**How do I authenticate?**
+Export your YouTube Music browser cookies into a `cookies.txt` file and point the add-on at it. See the Authentication section above.
+
+**Why do I need cookies?**
+YouTube Music does not expose a public auth API for third-party clients. Cookies tied to your account are the only way to verify your subscription and access your library.
+
+## Troubleshooting
+
+| Problem | Likely cause / fix |
+|---|---|
+| Login / authentication failed | Cookies missing, wrong path or for the wrong account. Re-export `cookies.txt` from a logged-in browser session. |
+| Cookies expired | Re-export and replace `cookies.txt` — Google rotates auth tokens periodically. |
+| Playback does not start | Check `kodi.log`. System Python with `yt-dlp` is used for stream resolution on Windows; make sure it is installed. |
+| Search returns no results | Verify the cookies file is for the correct YouTube Music account. Brand accounts may need profile-switching before exporting. |
+| Lyrics not loading | Lyrics depend on the track. If they are missing on YouTube Music itself, they will be missing here too. |
+| Brand account not visible | Re-export cookies while signed in to the brand account, or switch profiles in YouTube Music settings before exporting. |
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md).
+
+## Support
+
+- Open a [GitHub issue](https://github.com/ypoulis-hub/kodi-youtube-music/issues) using one of the templates (Bug, Feature request, Installation problem, Authentication problem).
+- Use [GitHub Discussions](https://github.com/ypoulis-hub/kodi-youtube-music/discussions) for questions, feature ideas or general feedback.
+- Follow the project on the [Kodi forum thread](https://forum.kodi.tv/showthread.php?tid=385237).
+
+If you find this add-on useful, you can support development with a one-time donation:
+
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=ypoulis%40gmail.com&currency_code=EUR)
+
+## Disclaimer
+
+This is an unofficial add-on and is **not** affiliated with, endorsed by or sponsored by Google, YouTube or YouTube Music. A valid **YouTube Music Premium** subscription is required for ad-free, full-quality playback.
 
 ## License
 
-MIT
-
----
-
-[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=ypoulis%40gmail.com&currency_code=EUR)
+[MIT](LICENSE)
