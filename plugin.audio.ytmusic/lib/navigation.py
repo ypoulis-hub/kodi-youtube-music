@@ -1,20 +1,45 @@
 """Kodi navigation / menu building for YTMusic."""
 
+import os
 import sys
+import time
 import urllib.parse
 import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
+import xbmcvfs
 
 from lib import api
 from lib.auth import is_authenticated, run_cookie_setup
 
 ADDON = xbmcaddon.Addon()
+PROFILE = xbmcvfs.translatePath(ADDON.getAddonInfo('profile'))
+PLAY_CLAIM_FILE = os.path.join(PROFILE, 'play_claim.txt')
 
 
 def log(msg):
     xbmc.log(f'[YTMusic] nav: {msg}', xbmc.LOGINFO)
+
+
+def _claim_playback(video_id):
+    """Mark video_id as the latest playback request. Newer claims overwrite older ones."""
+    try:
+        os.makedirs(PROFILE, exist_ok=True)
+        with open(PLAY_CLAIM_FILE, 'w') as f:
+            f.write(f'{video_id}\n{time.time()}')
+    except IOError:
+        pass
+
+
+def _is_current_claim(video_id):
+    """Return True if video_id is still the most recent playback request."""
+    try:
+        with open(PLAY_CLAIM_FILE, 'r') as f:
+            current = f.readline().strip()
+        return current == video_id
+    except IOError:
+        return True  # No claim file — assume we're still wanted
 
 
 class Router:
@@ -312,17 +337,29 @@ class Router:
             xbmcgui.Dialog().ok('YTMusic', 'No video ID provided.')
             return
 
-        pbar = xbmcgui.DialogProgress()
-        pbar.create('YTMusic', f'Resolving stream for: {title or video_id}')
+        # Claim this as the latest playback request. Each new action_play
+        # invocation overwrites the claim file. When this resolve completes we
+        # check whether we're still the claim — if a newer Next has superseded
+        # us, we exit silently (sys.exit) without calling setResolvedUrl at all.
+        # Calling setResolvedUrl(False) wedges PAPlayer, and setResolvedUrl(True)
+        # in parallel with another invocation makes PAPlayer give up entirely
+        # with "EXCEPTION: Kodi is not playing any file". Exiting silently lets
+        # Kodi release the handle cleanly and move on.
+        _claim_playback(video_id)
 
         try:
             stream_url, info = api.get_stream_url(video_id)
         except RuntimeError as e:
-            pbar.close()
-            xbmcgui.Dialog().ok('YTMusic - Playback Error', str(e))
-            return
+            if _is_current_claim(video_id):
+                xbmcgui.Dialog().ok('YTMusic - Playback Error', str(e))
+            sys.exit(0)
 
-        pbar.close()
+        # If a newer Next press has superseded us, bail out before touching
+        # PAPlayer. This is the critical step: parallel setResolvedUrl callbacks
+        # from rapid-fire skips are what cause the freezes / playback stops.
+        if not _is_current_claim(video_id):
+            log(f'Superseded by newer request, exiting silently for {video_id}')
+            sys.exit(0)
 
         li = xbmcgui.ListItem(title or info.get('title', 'Unknown'))
         li.setInfo('music', {

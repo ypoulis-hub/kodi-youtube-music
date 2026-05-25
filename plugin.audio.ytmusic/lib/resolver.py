@@ -330,7 +330,13 @@ def _check_prefetch_file(video_id):
 
 
 def _load_prefetch(video_id):
-    """Check prefetch cache; if the service is still resolving, wait for it."""
+    """Check prefetch cache; if the service is still resolving, wait briefly.
+
+    The wait is intentionally short and abort-interruptible so a user pressing
+    Next again doesn't get stuck behind a blocking sleep inside Kodi's player
+    thread. If the service hasn't finished in ~3s, we bail out and let the
+    caller resolve directly — the service's result is simply discarded.
+    """
     result = _check_prefetch_file(video_id)
     if result:
         return result
@@ -346,9 +352,11 @@ def _load_prefetch(video_id):
     if resolving_vid != video_id:
         return None
 
-    log('Service is pre-resolving {} — waiting...'.format(video_id))
-    for i in range(15):  # Wait up to 30 seconds (15 x 2s)
-        time.sleep(2)
+    log('Service is pre-resolving {} — waiting briefly...'.format(video_id))
+    monitor = xbmc.Monitor()
+    for _ in range(3):  # Wait up to ~3 seconds, abort-interruptible
+        if monitor.waitForAbort(1):
+            return None
         result = _check_prefetch_file(video_id)
         if result:
             return result
@@ -356,7 +364,7 @@ def _load_prefetch(video_id):
             # Service finished but no cache — resolution must have failed
             break
 
-    log('Prefetch wait finished for {}'.format(video_id))
+    log('Prefetch wait timed out for {} — resolving directly'.format(video_id))
     return None
 
 
@@ -392,7 +400,7 @@ def _resolve_via_cli(ytdlp_path, url):
     try:
         result = subprocess.run(
             [ytdlp_path, '-f', 'bestaudio', '-j', '--no-playlist', url],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, timeout=20,
             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
         )
     except subprocess.TimeoutExpired:
@@ -440,7 +448,7 @@ def _resolve_via_python(python_path, url):
     try:
         result = subprocess.run(
             [python_path, '-c', script, url],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, timeout=20,
             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
         )
     except subprocess.TimeoutExpired:

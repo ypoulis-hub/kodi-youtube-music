@@ -71,26 +71,39 @@ class YTMusicService(xbmc.Monitor):
         super().__init__()
         self.player = xbmc.Player()
         self._last_prefetched = None
+        self._last_track_start_check = 0
 
     def run(self):
         log('Service started')
         while not self.abortRequested():
             if self.player.isPlayingAudio():
                 self._check_prefetch()
-            if self.waitForAbort(3):
+            if self.waitForAbort(2):
                 break
         log('Service stopped')
 
     def _check_prefetch(self):
+        """Pre-resolve the next playlist track.
+
+        Triggers in two situations to make rapid-skip work:
+          - End of current track (within PREFETCH_THRESHOLD seconds) — original behaviour.
+          - Start of current track (within first 8 seconds) — new behaviour, so a Next
+            press shortly after a new song starts hits a cached URL instead of waiting
+            3-4s for yt-dlp. This is what protects against the user mashing Next.
+        """
         try:
             total = self.player.getTotalTime()
             elapsed = self.player.getTime()
             remaining = total - elapsed
 
-            if total > 30 and 0 < remaining <= PREFETCH_THRESHOLD:
-                next_vid = _get_next_video_id()
-                if next_vid and next_vid != self._last_prefetched:
-                    self._prefetch(next_vid)
+            near_end = total > 30 and 0 < remaining <= PREFETCH_THRESHOLD
+            near_start = elapsed < 8
+            if not (near_end or near_start):
+                return
+
+            next_vid = _get_next_video_id()
+            if next_vid and next_vid != self._last_prefetched:
+                self._prefetch(next_vid)
         except RuntimeError:
             pass  # Player stopped between checks
 
