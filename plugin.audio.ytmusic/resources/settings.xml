@@ -9,6 +9,7 @@
   </category>
   <category label="Library">
     <setting id="items_per_page" type="enum" label="Items per page" values="25|50|100" default="1"/>
+    <setting id="thumb_res" type="enum" label="Cover art resolution" values="544px|800px|1200px|1600px" default="2"/>
   </category>
   <category label="Advanced">
     <setting id="python_path" type="text" label="Custom Python path (leave empty for auto-detect)" default=""/>

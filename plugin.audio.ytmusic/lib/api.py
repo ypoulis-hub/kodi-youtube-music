@@ -1,7 +1,23 @@
 """YouTube Music API - thin wrapper around innertube client."""
 
+import re
+
 import xbmc
+import xbmcaddon
 from lib.innertube import YTMusicClient
+
+ADDON = xbmcaddon.Addon()
+
+# Resolution setting -> pixel size for square Google cover art.
+_THUMB_SIZES = {'0': 544, '1': 800, '2': 1200, '3': 1600}
+
+
+def _thumb_size():
+    """User-selected cover-art resolution (px). Defaults to 1200."""
+    try:
+        return _THUMB_SIZES.get(ADDON.getSetting('thumb_res') or '2', 1200)
+    except Exception:
+        return 1200
 
 _client = None
 
@@ -97,15 +113,18 @@ def _upscale_thumbnail(url):
     """Request high-res version of YouTube Music thumbnails."""
     if not url:
         return ''
-    # lh3.googleusercontent.com URLs support =wN-hN size params
-    if 'lh3.googleusercontent.com' in url:
-        # Replace size params like =w120-h120 or =w60-h60-l90-rj with =w544-h544
-        import re
-        url = re.sub(r'=w\d+.*$', '=w544-h544-l90-rj', url)
-    # i.ytimg.com URLs: replace default/mqdefault with maxresdefault
-    elif 'i.ytimg.com' in url:
-        for quality in ['default', 'mqdefault', 'hqdefault', 'sddefault']:
-            if quality in url:
-                url = url.replace(quality, 'maxresdefault')
-                break
+    size = _thumb_size()
+    # Google image-proxy hosts (lh3-lh6.googleusercontent.com, yt3.ggpht.com,
+    # yt3.googleusercontent.com, music.youtube.com proxies, etc.) all accept a
+    # size token after '='. Forms seen: =w120-h120, =w60-h60-l90-rj, =s226, =s0.
+    if 'googleusercontent.com' in url or 'ggpht.com' in url:
+        new = '=w{0}-h{1}-l90-rj'.format(size, size)
+        if '=' in url:
+            url = re.sub(r'=[swh]\d.*$', new, url)
+        else:
+            url = url + new
+    # i.ytimg.com URLs: replace the default-variant basename with maxresdefault
+    elif 'ytimg.com' in url:
+        url = re.sub(r'/(?:default|mqdefault|hqdefault|sddefault)\.jpg',
+                     '/maxresdefault.jpg', url)
     return url

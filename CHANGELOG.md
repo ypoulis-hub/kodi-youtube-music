@@ -4,6 +4,15 @@ All notable changes to **YouTube Music for Kodi** are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.10] – 2026-06-14
+
+### Changed
+- Cover art (album/artist/playlist thumbnails) now requested at much higher resolution. Default bumped from a fixed 544px to **1200px**, with a new **Settings → Library → Cover art resolution** option (544 / 800 / 1200 / 1600px).
+- Thumbnail upscaling now covers all Google image hosts (`lh3`–`lh6.googleusercontent.com`, `yt3.ggpht.com`, `yt3.googleusercontent.com`) instead of only `lh3.googleusercontent.com`, and appends a size token to URLs that lacked one — so artist and other-host images upscale too.
+
+### Fixed
+- `i.ytimg.com` upscaling bug where `hqdefault` became `hqmaxresdefault` (the `default` substring matched first), producing broken image URLs. Now matched on the full basename.
+
 ## [1.0.9] – 2026-05-26
 
 ### Fixed
